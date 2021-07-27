@@ -59,14 +59,6 @@ func canDo() string {
 }
 
 func installPC() string {
-	test := exec.Command("node", "--v")
-	test.Stdout = os.Stdout
-	test.Stderr = os.Stderr
-	test.Stdin = os.Stdin
-	err := test.Run()
-	if err != nil {
-		return "{\"text\": \"Install node js\", \"link\": \"https://nodejs.org/en/\"}"
-	}
 	os.Chdir(getAppPath())
 
 	folderInfo, err := os.Stat(getAppPath() + string(os.PathSeparator) + "powercord")
@@ -80,10 +72,10 @@ func installPC() string {
 		if err != nil {
   		log.Fatal(err)
 		}
-		return "{\"text\": \"Installed powercord\"}"
+		return "Installed powercord"
   } else {
 		log.Println(folderInfo)
-		return "{\"text\": \"Powercord is already installed\"}"
+		return "Powercord is already installed"
 	}
 }
 

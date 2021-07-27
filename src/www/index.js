@@ -6,9 +6,7 @@ const unplug = document.querySelector('.porkUnplugger');
 
 btnGit.addEventListener('click', async () => {
 	gitText.innerText = 'Installing powercord...';
-	const h = JSON.parse(await installPC());
-	if (h.link) gitText.innerHTML = `<a target=_blank href=${h.link}>${h.text}</a>`;
-	else gitText.innerText = h.link;
+	gitText.innerText = await installPC();
 });
 
 uninstall.addEventListener('click', async () => {
