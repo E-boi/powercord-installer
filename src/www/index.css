@@ -1,0 +1,7 @@
+.disable {
+	display: none;
+}
+
+.plugins > button {
+	display: block;
+}

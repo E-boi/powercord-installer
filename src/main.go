@@ -11,6 +11,7 @@ import (
 	"os/signal"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	"github.com/zserge/lorca"
 )
@@ -24,8 +25,18 @@ func getAppPath() string {
     panic(err)
 	}
   exPath := filepath.Dir(ex)
-  fmt.Println(exPath)
 	return exPath
+}
+
+func formatPath(paths []string) string {
+	return strings.Join(paths[:], string(os.PathSeparator))
+}
+
+func isPorkInstalled() bool {
+	os.Chdir(getAppPath())
+
+	_, err := os.Stat(getAppPath() + string(os.PathSeparator) + "powercord")
+	return !os.IsNotExist(err)
 }
 
 func canDo() string {
@@ -59,10 +70,7 @@ func canDo() string {
 }
 
 func installPC() string {
-	os.Chdir(getAppPath())
-
-	folderInfo, err := os.Stat(getAppPath() + string(os.PathSeparator) + "powercord")
-  if os.IsNotExist(err) {
+  if !isPorkInstalled() {
   	cmd := exec.Command("git", "clone", "https://github.com/powercord-org/powercord")
 	
 		cmd.Stdout = os.Stdout
@@ -74,37 +82,27 @@ func installPC() string {
 		}
 		return "Installed powercord"
   } else {
-		log.Println(folderInfo)
 		return "Powercord is already installed"
 	}
 }
 
 func uninstallPC() string {
-	os.Chdir(getAppPath())
-
-	folderInfo, err := os.Stat(getAppPath() + string(os.PathSeparator) + "powercord")
-  if os.IsNotExist(err) {
+  if !isPorkInstalled() {
 		return "Powercord isn't installed"
   } else {
 		err := os.RemoveAll("powercord")
     if err != nil {
       log.Fatal(err)
     }
-
-		log.Println(folderInfo)
 		return "Uninstalled powercord"
 	}
 }
 
 func unplugThePork() string {
-	os.Chdir(getAppPath())
-
-	folderInfo, err := os.Stat(getAppPath() + string(os.PathSeparator) + "powercord")
-  if os.IsNotExist(err) {
+  if !isPorkInstalled() {
 		return "Powercord isn't installed"
 	} else {
 		os.Chdir(getAppPath() + string(os.PathSeparator) + "powercord")
-		log.Println(os.Getwd())
 		cmd := exec.Command("npm", "run", "unplug")
 	
   	cmd.Stdout = os.Stdout
@@ -115,16 +113,12 @@ func unplugThePork() string {
   		log.Fatal(err)
 		}
 
-		log.Println(folderInfo)
 		return "Unplugged powercord"
 	}
 }
 
 func plugThePork() string {
-	os.Chdir(getAppPath())
-
-	folderInfo, err := os.Stat(getAppPath() + string(os.PathSeparator) + "powercord")
-  if os.IsNotExist(err) {
+  if !isPorkInstalled() {
 		return "Powercord isn't installed"
 	} else {
 		os.Chdir(getAppPath() + string(os.PathSeparator) + "powercord")
@@ -147,8 +141,53 @@ func plugThePork() string {
 		if errPlug != nil {
   		log.Fatal(errPlug)
 		}
-		log.Println(folderInfo)
 		return "Plugged powercord"
+	}
+}
+
+func getThemeDownloader() string {
+	if isPorkInstalled() {
+		_, error := os.Stat(getAppPath() + string(os.PathSeparator) + formatPath([]string {"powercord", "src", "Powercord", "plugins", "PowercordThemeDownloader"}))
+		if os.IsNotExist(error) {
+			os.Chdir(getAppPath() + string(os.PathSeparator) + formatPath([]string {"powercord", "src", "Powercord", "plugins"}))
+  		cmd := exec.Command("git", "clone", "https://github.com/ploogins/PowercordThemeDownloader")
+	
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			cmd.Stdin = os.Stdin
+			err := cmd.Run()
+			if err != nil {
+  			log.Fatal(err)
+			}
+			return "Installed theme downloader"
+		} else {
+			return "Theme downloader is already installed"
+		}
+  } else {
+		return "Powercord is already installed"
+	}
+}
+
+func getPluginDownloader() string {
+	if isPorkInstalled() {
+		_, error := os.Stat(getAppPath() + string(os.PathSeparator) + formatPath([]string {"powercord", "src", "Powercord", "plugins", "PowercordPluginDownloader"}))
+		if os.IsNotExist(error) {
+			os.Chdir(getAppPath() + string(os.PathSeparator) + formatPath([]string {"powercord", "src", "Powercord", "plugins"}))
+  		cmd := exec.Command("git", "clone", "https://github.com/LandenStephenss/PowercordPluginDownloader")
+	
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			cmd.Stdin = os.Stdin
+			err := cmd.Run()
+			if err != nil {
+  			log.Fatal(err)
+			}
+			return "Installed plugin downloader"
+		} else {
+			return "Plugin downloader is already installed"
+		}
+  } else {
+		return "Powercord is already installed"
 	}
 }
 
@@ -172,6 +211,9 @@ func main() {
 	ui.Bind("plugPowercord", plugThePork)
 	ui.Bind("unplugPowercord", unplugThePork)
 	ui.Bind("canDo", canDo)
+	ui.Bind("isInstalled", isPorkInstalled)
+	ui.Bind("downloadThemePlugin", getThemeDownloader)
+	ui.Bind("downloadPluginDownloader", getPluginDownloader)
 
 	ln, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
