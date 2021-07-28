@@ -1,7 +1,46 @@
-.disable {
-	display: none;
+:root {
+	--blurple: #7289da;
+	--background-primary: #303030;
 }
 
-.plugins > button {
-	display: block;
+.disable {
+	display: none !important;
+}
+
+.powercord-logo {
+	display: flex;
+	justify-self: center;
+	align-self: center;
+	height: 64px;
+	width: 64px;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	background-color: var(--background-primary);
+}
+
+.plugins {
+	display: flex;
+	align-self: center;
+}
+
+button {
+	color: #fff;
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	transition: filter 0.17s ease;
+	font-size: 13px;
+	background-color: var(--blurple);
+	font-weight: 550;
+	height: 36px;
+	min-width: 60px;
+	padding: 2px 16px;
+}
+
+button:hover {
+	filter: brightness(0.9);
+	text-decoration: none;
 }
