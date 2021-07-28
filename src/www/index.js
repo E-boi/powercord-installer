@@ -1,59 +1,70 @@
-const btnGit = document.querySelector('.git-button');
-const gitText = document.querySelector('.git-text');
+const btnInstall = document.querySelector('.install');
+const text = document.querySelector('.text');
 const uninstall = document.querySelector('.uninstall');
-const plug = document.querySelector('.porkPlugger');
-const unplug = document.querySelector('.porkUnplugger');
+const btnPlug = document.querySelector('.porkPlugger');
+const btnUnplug = document.querySelector('.porkUnplugger');
 const btnTheme = document.querySelector('.themeDownloader');
 const btnPlugin = document.querySelector('.pluginDownloader');
 const divPlugins = document.querySelector('.plugins');
 let installed = false;
 
-btnGit.addEventListener('click', async () => {
-	gitText.innerText = 'Installing powercord...';
-	gitText.innerText = await installPC();
+btnInstall.addEventListener('click', async () => {
+	text.innerText = 'Installing powercord...';
+	text.innerText = await installPC();
 	installed = true;
 	show();
 });
 
 uninstall.addEventListener('click', async () => {
-	gitText.innerText = 'Uninstalling powercord...';
-	gitText.innerText = await uninstallPC();
+	text.innerText = 'Uninstalling powercord...';
+	text.innerText = await uninstallPC();
 	installed = false;
 	show();
 });
 
-plug.addEventListener('click', async () => {
-	gitText.innerText = 'Plugging powercord...';
-	gitText.innerText = await plugPowercord();
+btnPlug.addEventListener('click', async () => {
+	text.innerText = 'Plugging powercord...';
+	text.innerText = await plugPowercord();
 });
 
-unplug.addEventListener('click', async () => {
-	gitText.innerText = 'Unplugging powercord...';
-	gitText.innerText = await unplugPowercord();
+btnUnplug.addEventListener('click', async () => {
+	text.innerText = 'Unplugging powercord...';
+	text.innerText = await unplugPowercord();
 });
 
 btnTheme.addEventListener('click', async () => {
-	gitText.innerText = await downloadThemePlugin();
+	text.innerText = await downloadThemePlugin();
 });
 
 btnPlugin.addEventListener('click', async () => {
-	gitText.innerText = await downloadPluginDownloader();
+	text.innerText = await downloadPluginDownloader();
 });
 
 function show() {
-	if (installed) divPlugins.classList.remove('disable');
-	else divPlugins.classList.add('disable');
+	if (installed) {
+		divPlugins.classList.remove('disable');
+		uninstall.classList.remove('disable');
+		btnInstall.classList.add('disable');
+		btnPlug.classList.remove('disable');
+		btnUnplug.classList.remove('disable');
+	} else {
+		divPlugins.classList.add('disable');
+		uninstall.classList.add('disable');
+		btnPlug.classList.add('disable');
+		btnUnplug.classList.add('disable');
+		btnInstall.classList.remove('disable');
+	}
 }
 
 async function setup() {
 	const cando = JSON.parse(await canDo());
 	installed = await isInstalled();
 	if (!cando.ok) {
-		btnGit.disabled = true;
+		btnInstall.disabled = true;
 		uninstall.disabled = true;
-		plug.disabled = true;
-		unplug.disabled = true;
-		gitText.innerHTML = `<a target=_blank href=${cando.link}>${cando.text}<a/>`;
+		btnPlug.disabled = true;
+		btnUnplug.disabled = true;
+		text.innerHTML = `<a target=_blank href=${cando.link}>${cando.text}<a/>`;
 	}
 	show();
 }
