@@ -1,6 +1,6 @@
 @echo off
 set APP=powercord-installer
-set APPDIR=%APP%_1.0.0
+set APPDIR=%APP%_1.1.0
 
 cd src/
 go generate
