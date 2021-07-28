@@ -1,5 +1,7 @@
 # powercord-installer
 A installer for powercord. Works on both windows and linux.
+
+This installer is unofficial. If you have a question or a problem dm me (ugly-patootie#0611) or create a issue. dms are open if you are the powercord server otherwise I might not answer.
  
 **For linux users run the executable in the terminal**
  
