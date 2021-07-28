@@ -164,7 +164,7 @@ func getThemeDownloader() string {
 			return "Theme downloader is already installed"
 		}
   } else {
-		return "Powercord is already installed"
+		return "Powercord is not installed"
 	}
 }
 
@@ -187,7 +187,25 @@ func getPluginDownloader() string {
 			return "Plugin downloader is already installed"
 		}
   } else {
-		return "Powercord is already installed"
+		return "Powercord is not installed"
+	}
+}
+
+func updatePorkcord() string {
+	if isPorkInstalled() {
+		os.Chdir(getAppPath() + string(os.PathSeparator) + "powercord")
+  	cmd := exec.Command("git", "pull")
+	
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Stdin = os.Stdin
+		err := cmd.Run()
+		if err != nil {
+  		log.Fatal(err)
+		}
+		return "Powercord is now up to date"
+	} else {
+		return "Powercord is not installed"
 	}
 }
 
@@ -214,6 +232,7 @@ func main() {
 	ui.Bind("isInstalled", isPorkInstalled)
 	ui.Bind("downloadThemePlugin", getThemeDownloader)
 	ui.Bind("downloadPluginDownloader", getPluginDownloader)
+	ui.Bind("updatePowercord", updatePorkcord)
 
 	ln, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {

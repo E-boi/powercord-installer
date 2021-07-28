@@ -5,6 +5,7 @@ const btnPlug = document.querySelector('.porkPlugger');
 const btnUnplug = document.querySelector('.porkUnplugger');
 const btnTheme = document.querySelector('.themeDownloader');
 const btnPlugin = document.querySelector('.pluginDownloader');
+const btnUpdate = document.querySelector('.update');
 const divPlugins = document.querySelector('.plugins');
 let installed = false;
 
@@ -40,6 +41,10 @@ btnPlugin.addEventListener('click', async () => {
 	text.innerText = await downloadPluginDownloader();
 });
 
+btnUpdate.addEventListener('click', async () => {
+	text.innerText = await updatePowercord();
+});
+
 function show() {
 	if (installed) {
 		divPlugins.classList.remove('disable');
@@ -47,12 +52,14 @@ function show() {
 		btnInstall.classList.add('disable');
 		btnPlug.classList.remove('disable');
 		btnUnplug.classList.remove('disable');
+		btnUpdate.classList.remove('disable');
 	} else {
 		divPlugins.classList.add('disable');
 		uninstall.classList.add('disable');
 		btnPlug.classList.add('disable');
 		btnUnplug.classList.add('disable');
 		btnInstall.classList.remove('disable');
+		btnUpdate.classList.add('disable');
 	}
 }
 
