@@ -1,4 +1,4 @@
-module github.com/e-boi/powercord-installer-dev
+module github.com/e-boi/powercord-installer
 
 go 1.16
 
