@@ -1,7 +1,7 @@
 #!/bin/sh
 
 APP=powercord-installer
-APPDIR=${APP}_1.1.0
+APPDIR=${APP}-linux
 
 cd ./src
 
